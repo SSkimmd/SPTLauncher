@@ -22,6 +22,7 @@ namespace SPTLauncherV2
             PopulateLaunchOptions();
 
             checkedListBox1.ItemCheck += OnModChecked;
+            button3.Click += delegate { launcher.OpenSettingsForm(); };
             button4.Click += OpenModLocation;
             button5.Click += SelectedLaunchOption;
             button6.Click += (sender, args) => launcher.OpenConfigEditorForm(SelectedConfig);
@@ -35,7 +36,7 @@ namespace SPTLauncherV2
         }
 
         private void OpenModLocation(object sender, EventArgs e) {
-            Process.Start("explorer.exe", SelectedMod.ModLocation + "\\");
+            Process.Start("explorer.exe", SelectedMod.ModLocation + "/");
         }
 
         private void GetConfigLocation(object sender, EventArgs e) {      
@@ -56,23 +57,24 @@ namespace SPTLauncherV2
         private void SelectedLaunchOption(object sender, EventArgs e) {
             if(comboBox2.Text == "Both") {
                 //launch both
+                Directory.SetCurrentDirectory(launcher.CurrentConfig.BaseLocation);
                 Process.Start(launcher.CurrentConfig.ServerLocation);
                 Process.Start(launcher.CurrentConfig.LauncherLocation);
 
-                if(checkBox1.Checked) {
+                if (checkBox1.Checked) {
                     Environment.Exit(0);
                 }
             }
             if(comboBox2.Text == "Server") {
+                Directory.SetCurrentDirectory(launcher.CurrentConfig.BaseLocation);
                 Process.Start(launcher.CurrentConfig.ServerLocation);
-                Process.Start(launcher.CurrentConfig.LauncherLocation);
 
                 if(checkBox1.Checked) {
                     Environment.Exit(0);
                 }
             }
             if(comboBox2.Text == "Launcher") {
-                Process.Start(launcher.CurrentConfig.ServerLocation);
+                Directory.SetCurrentDirectory(launcher.CurrentConfig.BaseLocation);
                 Process.Start(launcher.CurrentConfig.LauncherLocation);
 
                 if(checkBox1.Checked) {

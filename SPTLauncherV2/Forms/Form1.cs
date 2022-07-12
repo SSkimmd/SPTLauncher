@@ -88,39 +88,11 @@ namespace SPTLauncherV2 {
         }
 
         private void OnNewProfile(object sender, EventArgs e) {
-            List<string> fileLocations = GetFileLocations();
+            List<string> fileLocations = launcher.GetFileLocations();
             Profile profile = new(comboBox1.Text, new Config(new List<Mod>(), new List<string>(), 
                 fileLocations[0], fileLocations[1], fileLocations[2], ""));
             launcher.CreateProfile(profile);
             CompileExistingModList(profile);
-        }
-
-        private List<string> GetFileLocations() {
-            List<string> locations = new();
-
-            OpenFileDialog launcherLocation = new();
-            launcherLocation.Title = "Launcher File Location";
-            if(launcherLocation.ShowDialog() == DialogResult.OK) {
-                locations.Add(launcherLocation.FileName);
-            }
-
-            OpenFileDialog serverLocation = new();
-            serverLocation.Title = "Server File Location";
-            if(serverLocation.ShowDialog() == DialogResult.OK) {
-                locations.Add(serverLocation.FileName);
-            }
-
-            CommonOpenFileDialog baseLocation = new();
-            baseLocation.IsFolderPicker = true;
-            if(baseLocation.ShowDialog() == CommonFileDialogResult.Ok) {
-                locations.Add(baseLocation.FileName);
-            }
-            
-            foreach(string location in locations) {
-                location.Replace("\\", "/");
-            }
-
-            return locations;
         }
     }
 }

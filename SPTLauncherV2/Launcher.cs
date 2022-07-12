@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.WindowsAPICodePack.Dialogs;
 using Newtonsoft.Json;
 
 namespace SPTLauncherV2 {
@@ -16,6 +17,7 @@ namespace SPTLauncherV2 {
             OpenSelectProfileForm();
         }
 
+        public void ToggleDev(bool enabled) { IsDeveloper = enabled; }
 
         public void OpenSelectProfileForm() {
             Form ProfileSelectForm = new Form1(this);
@@ -54,7 +56,8 @@ namespace SPTLauncherV2 {
         }
 
         public void OpenSettingsForm() {
-
+            Form Settings = new Settings(this);
+            Settings.Show();
         }
 
         public void UpdateConfig(Config config) {
@@ -78,6 +81,12 @@ namespace SPTLauncherV2 {
 
         public void CreateProfile(Profile profile) {
             string file = Directory.GetCurrentDirectory() + "/" + profile.ProfileName + ".json";
+            string disabledDir = profile.ProfileConfig.BaseLocation + "/user/mods-disabled/";
+
+            if(!Directory.Exists(disabledDir)) {
+                Directory.CreateDirectory(profile.ProfileConfig.BaseLocation + "/user/mods-disabled/");
+            }
+
 
             if (!File.Exists(file)) {
                 File.Create(file).Dispose();
@@ -85,6 +94,43 @@ namespace SPTLauncherV2 {
             }
 
             UpdateProfile(profile);
+        }
+
+        public List<string> GetFileLocations(int index = 0) {
+            List<string> locations = new();
+
+
+            if(index == 1 || index == 0) {
+                OpenFileDialog launcherLocation = new();
+                launcherLocation.Title = "Launcher File Location";
+                launcherLocation.Filter = "Exe Files (.exe)|*.exe";
+                if (launcherLocation.ShowDialog() == DialogResult.OK) {
+                    locations.Add(launcherLocation.FileName);
+                }
+            }
+
+            if(index == 2 || index == 0) {
+                OpenFileDialog serverLocation = new();
+                serverLocation.Title = "Server File Location";
+                serverLocation.Filter = "Exe Files (.exe)|*.exe";
+                if (serverLocation.ShowDialog() == DialogResult.OK) {
+                    locations.Add(serverLocation.FileName);
+                }
+            }
+
+            if (index == 3 || index == 0) {
+                CommonOpenFileDialog baseLocation = new();
+                baseLocation.IsFolderPicker = true;
+                if (baseLocation.ShowDialog() == CommonFileDialogResult.Ok) {
+                    locations.Add(baseLocation.FileName);
+                }
+            }
+            
+            foreach(string location in locations) {
+                location.Replace("\\", "/");
+            }
+
+            return locations;
         }
     }
 }

@@ -21,6 +21,7 @@ namespace SPTLauncherV2 {
         public ConfigEditor(Launcher launcher, string config) {
             this.launcher = launcher;
             this.config = config;
+            dev = launcher.IsDeveloper;
 
             InitializeComponent();
 
@@ -91,7 +92,7 @@ namespace SPTLauncherV2 {
 
                     numselect.ValueChanged += delegate {
                         JValue? p = token as JValue;
-                        p.Value = numselect.Value;
+                        p.Value = (int)numselect.Value;
                     };
 
                     panel1.Controls.Add(numselect);
