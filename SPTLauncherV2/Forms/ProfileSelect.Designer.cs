@@ -1,6 +1,6 @@
 ﻿namespace SPTLauncherV2
 {
-    partial class Form1
+    partial class ProfileSelect
     {
         /// <summary>
         ///  Required designer variable.

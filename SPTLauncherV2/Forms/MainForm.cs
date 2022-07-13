@@ -28,7 +28,10 @@ namespace SPTLauncherV2
             PopulateLaunchOptions();
 
             checkedListBox1.ItemCheck += OnModChecked;
+
             button3.Click += delegate { launcher.OpenSettingsForm(); };
+            button7.Click += delegate { launcher.OpenDependencyViewer(); };
+
             button4.Click += OpenModLocation;
             button5.Click += SelectedLaunchOption;
             button6.Click += (sender, args) => launcher.OpenConfigEditorForm(SelectedConfig);
@@ -56,12 +59,14 @@ namespace SPTLauncherV2
                 if(Path.GetFileName(file).ToLower() == "config.json") {
                     SelectedConfig = file;
                     textBox6.Text = file.Replace("\\", "/");
+                    button6.Enabled = true;
                     return;
                 }
             }
 
             SelectedConfig = "";
             textBox6.Text = "No Config File";
+            button6.Enabled = false;
         }
 
         private void SelectedLaunchOption(object sender, EventArgs e) {
@@ -153,6 +158,13 @@ namespace SPTLauncherV2
         }
 
         private void RemoveMod() {
+            var confirmResult = MessageBox.Show("Are You Sure You Want To Remove Mod?",
+                                     "Confirm Remove",
+                                     MessageBoxButtons.YesNo);
+            if (confirmResult == DialogResult.No) {
+                return;
+            }
+
             Mod m = launcher.CurrentConfig.ModList[checkedListBox1.SelectedIndex];
 
             try {

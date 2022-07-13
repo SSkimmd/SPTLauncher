@@ -112,32 +112,7 @@ namespace SPTLauncherV2 {
                 }
             } else if(token is JArray) {
                 var array = (JArray)token;
-
-
-                if(array.Count > 0 && dev) {
-                    ComboBox comboBox = new();
-                    comboBox.Items.Add("Number");
-                    comboBox.Items.Add("String");
-                    comboBox.Items.Add("Boolean");
-                    comboBox.SelectedIndex = 0;
-
-                    Button button = new();
-                    button.Text = "Add Element";
-                    button.Height = 40;
-                    button.Width = 150;
-                    button.Margin = new Padding(0, 10, 0, 10);
-                    button.Click += delegate {
-                        if(comboBox.SelectedIndex == 0) { token.AddAfterSelf(new JProperty("testdynamicnum", 0)); }
-                        if(comboBox.SelectedIndex == 1) { token.AddAfterSelf(new JProperty("testdynamicstr", "")); }
-                        if(comboBox.SelectedIndex == 2) { token.AddAfterSelf(new JProperty("testdynamicbool", false)); }
-                        SaveConfigFile();
-                        Close();
-                    };
-
-                    panel1.Controls.Add(comboBox);
-                    panel1.Controls.Add(button);
-                }
-
+               
                 for(int i = 0; i < array.Count; i++) {
                     DisplayNode(array[i]);
                 }

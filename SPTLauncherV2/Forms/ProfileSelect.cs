@@ -11,11 +11,11 @@ using Newtonsoft.Json.Schema;
 using Newtonsoft.Json.Schema.Generation;
 
 namespace SPTLauncherV2 {
-    public partial class Form1 : Form {
+    public partial class ProfileSelect : Form {
         public Launcher launcher;
         List<Profile> profiles = new List<Profile>();
 
-        public Form1(Launcher launcher) {
+        public ProfileSelect(Launcher launcher) {
             this.launcher = launcher;
             InitializeComponent();
             OnLauncherOpen();

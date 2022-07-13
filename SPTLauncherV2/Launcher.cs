@@ -21,7 +21,7 @@ namespace SPTLauncherV2 {
         public void ToggleDev(bool enabled) { IsDeveloper = enabled; }
 
         public void OpenSelectProfileForm() {
-            Form ProfileSelectForm = new Form1(this);
+            Form ProfileSelectForm = new ProfileSelect(this);
             ProfileSelectForm.Show();
             ProfileSelectForm.FormClosed += delegate {
                 ClosedSelectProfileForm();
@@ -59,6 +59,11 @@ namespace SPTLauncherV2 {
         public void OpenSettingsForm() {
             Form Settings = new Settings(this);
             Settings.Show();
+        }
+
+        public void OpenDependencyViewer() {
+            Form DependencyViewer = new DependencyViewer(this);
+            DependencyViewer.Show();
         }
 
         public void UpdateConfig(Config config) {
