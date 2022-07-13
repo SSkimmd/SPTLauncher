@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace SPTLauncherV2 {
     public class Launcher : ApplicationContext {
@@ -95,6 +96,45 @@ namespace SPTLauncherV2 {
 
             UpdateProfile(profile);
         }
+
+
+        public void CompileExistingModList(Profile profile) {
+            List<string> modFolders = Directory.GetDirectories(profile.ProfileConfig.BaseLocation + "/user/mods/").ToList();
+            List<string> modsDisabled = Directory.GetDirectories(profile.ProfileConfig.BaseLocation + "/user/mods-disabled/").ToList();
+            modFolders.AddRange(modsDisabled);
+
+            List<Mod> modList = profile.ProfileConfig.ModList;
+
+            //CHECK MODS DONT ALREADY EXIST THEN ADD THEM
+            foreach(string path in modFolders) {
+                if (File.Exists(path + "/package.json")) {
+                    var data = (JObject)JsonConvert.DeserializeObject(File.ReadAllText(path + "/package.json"));
+
+                    Mod existingMod = modList.Find(mod => mod.ModLocation == path);
+
+                    if(existingMod == null) {
+                        bool isModEnabled = !path.Contains("/mods-disabled/");
+
+                        modList.Add(new Mod(data["name"].Value<string>(), data["author"].Value<string>(), path,
+                            data["version"].Value<string>(), data["akiVersion"].Value<string>(), data["main"].Value<string>(), isModEnabled));
+                    }
+                }
+            }
+
+            //REMOVE MODS THAT DONT EXIST
+            for(int i = 0; i < modList.Count; i++) {
+                if(!Directory.Exists(modList[i].ModLocation)) {
+                    modList.RemoveAt(i);
+                }
+            }
+
+
+            profile.ProfileConfig.ModList = modList;
+            UpdateProfile(profile);
+        }
+
+
+
 
         public List<string> GetFileLocations(int index = 0) {
             List<string> locations = new();

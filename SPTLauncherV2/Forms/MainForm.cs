@@ -1,4 +1,7 @@
 ﻿using System.Diagnostics;
+using System.Text;
+using Aspose.Zip;
+using Aspose.Zip.Rar;
 
 namespace SPTLauncherV2
 {
@@ -7,9 +10,11 @@ namespace SPTLauncherV2
         public Mod SelectedMod;
         public string SelectedConfig;
         bool IgnoreOnModChecked = false;
+        bool IsDeveloper = false;
 
         public MainForm(Launcher launcher) {
             this.launcher = launcher;
+            this.IsDeveloper = launcher.IsDeveloper;
             InitializeComponent();
             OnLauncherOpen();
         }
@@ -26,6 +31,10 @@ namespace SPTLauncherV2
             button4.Click += OpenModLocation;
             button5.Click += SelectedLaunchOption;
             button6.Click += (sender, args) => launcher.OpenConfigEditorForm(SelectedConfig);
+
+            button1.Click += delegate { AddMod(); };
+            button2.Click += delegate { RemoveMod(); };
+
             button9.Hide();
             button8.Hide();
 
@@ -110,6 +119,67 @@ namespace SPTLauncherV2
 
             if(checkedListBox1.Items.Count > 0) {
                 checkedListBox1.SetSelected(0, true);
+            }
+        }
+
+
+        private void RefreshModList() {
+            IgnoreOnModChecked = true;
+            checkedListBox1.Items.Clear();
+            Debug.WriteLine(checkedListBox1.Items.Count);
+
+            foreach(Mod mod in launcher.CurrentConfig.ModList) {
+                checkedListBox1.Items.Add(mod.ModName);
+                checkedListBox1.SetItemChecked(checkedListBox1.Items.Count - 1, mod.ModEnabled);
+            }
+
+            if(checkedListBox1.Items.Count > 0) {
+                checkedListBox1.SetSelected(0, true);
+            }
+
+            IgnoreOnModChecked = false;
+        }
+
+        private void AddMod() {
+            OpenFileDialog fileLocation = new();
+            fileLocation.Title = "Select Archive Location";
+            fileLocation.Filter = "Zip Files (.zip)|*.zip;*.ZIP|RAR Files (.rar)|*.rar;*.RAR|7Zip Files (.7z)|*.7z";
+            if(fileLocation.ShowDialog() == DialogResult.OK) {
+                ExtractMod(fileLocation.FileName);
+                launcher.CompileExistingModList(launcher.CurrentProfile);
+                RefreshModList();
+            }
+        }
+
+        private void RemoveMod() {
+            Mod m = launcher.CurrentConfig.ModList[checkedListBox1.SelectedIndex];
+
+            try {
+                Directory.Delete(m.ModLocation, true);
+
+                while(Directory.Exists(m.ModLocation)) {
+                    //wait
+                }
+
+                launcher.CompileExistingModList(launcher.CurrentProfile);
+                RefreshModList();
+            } catch(Exception e) {
+                MessageBox.Show("Folder Is Open In Explorer, Close To Remove Mod");
+            }
+        }
+
+        private void ExtractMod(string file) {
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            string fileExt = (Path.GetExtension(file).ToLower());
+
+            if(fileExt == ".rar") {
+                RarArchive archive = new RarArchive(file);
+                archive.ExtractToDirectory(launcher.CurrentConfig.BaseLocation + "/user/mods/");
+                MessageBox.Show("Mod Added");
+            } else if(fileExt == ".zip") {
+                Archive archive = new Archive(file);
+                archive.ExtractToDirectory(launcher.CurrentConfig.BaseLocation + "/user/mods/");
+                MessageBox.Show("Mod Added");
             }
         }
 
