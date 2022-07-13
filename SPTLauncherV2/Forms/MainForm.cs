@@ -61,7 +61,7 @@ namespace SPTLauncherV2
                 Process.Start(launcher.CurrentConfig.ServerLocation);
                 Process.Start(launcher.CurrentConfig.LauncherLocation);
 
-                if (checkBox1.Checked) {
+                if(checkBox1.Checked) {
                     Environment.Exit(0);
                 }
             }

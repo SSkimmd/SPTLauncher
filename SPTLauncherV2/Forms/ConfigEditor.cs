@@ -86,6 +86,7 @@ namespace SPTLauncherV2 {
 
                 } else if(token.Type == JTokenType.Integer || token.Type == JTokenType.Float) {
                     NumericUpDown numselect = new();
+                    numselect.Maximum = int.MaxValue;
                     numselect.Value = (decimal)token.ToObject<float>();
                     numselect.Width = 300;
                     numselect.Height = 20;
