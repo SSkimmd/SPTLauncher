@@ -2,6 +2,7 @@
 using System.Text;
 using Aspose.Zip;
 using Aspose.Zip.Rar;
+using Aspose.Zip.SevenZip;
 
 namespace SPTLauncherV2
 {
@@ -178,6 +179,10 @@ namespace SPTLauncherV2
                 MessageBox.Show("Mod Added");
             } else if(fileExt == ".zip") {
                 Archive archive = new Archive(file);
+                archive.ExtractToDirectory(launcher.CurrentConfig.BaseLocation + "/user/mods/");
+                MessageBox.Show("Mod Added");
+            } else if(fileExt == ".7z") {
+                SevenZipArchive archive = new SevenZipArchive(file);
                 archive.ExtractToDirectory(launcher.CurrentConfig.BaseLocation + "/user/mods/");
                 MessageBox.Show("Mod Added");
             }
