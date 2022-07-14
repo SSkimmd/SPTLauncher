@@ -55,6 +55,11 @@ namespace SPTLauncherV2 {
             DisplayNode(root);
         }
 
+        private void ClearTree() {
+            panel1.Controls.Clear();
+            DisplayJsonTree(root);
+        }
+
         public void DisplayNode(JToken token) {
             if(token is JObject) {
                 var obj = (JObject)token;
@@ -112,7 +117,33 @@ namespace SPTLauncherV2 {
                 }
             } else if(token is JArray) {
                 var array = (JArray)token;
-               
+
+                Button button = new();
+                button.Text = "New Item";
+                button.Width = 110;
+                button.Height = 30;
+                button.Click += delegate { array.Add(array[0].DeepClone()); ClearTree(); };
+                panel1.Controls.Add(button);
+
+                ComboBox combobox = new();
+                combobox.Width = 300;
+                foreach (var item in array) {
+                    if(item is JObject) {
+                        combobox.Items.Add(item.First());
+                    } else {
+                        combobox.Items.Add(item);
+                    }
+                }
+                combobox.SelectedIndex = 0;
+                panel1.Controls.Add(combobox);
+
+                Button button2 = new();
+                button2.Text = "Remove Item";
+                button2.Width = 110;
+                button2.Height = 30;
+                button2.Click += delegate { array.RemoveAt(combobox.SelectedIndex); ClearTree(); };
+                panel1.Controls.Add(button2);
+
                 for(int i = 0; i < array.Count; i++) {
                     DisplayNode(array[i]);
                 }

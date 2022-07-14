@@ -74,9 +74,9 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(405, 422);
+            this.button1.Location = new System.Drawing.Point(435, 422);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(112, 29);
+            this.button1.Size = new System.Drawing.Size(82, 29);
             this.button1.TabIndex = 4;
             this.button1.Text = "Mod";
             this.button1.UseVisualStyleBackColor = true;
@@ -84,7 +84,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(309, 426);
+            this.label3.Location = new System.Drawing.Point(339, 426);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(90, 20);
             this.label3.TabIndex = 5;
