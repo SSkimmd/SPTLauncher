@@ -39,8 +39,7 @@ namespace SPTLauncherV2
             button1.Click += delegate { AddMod(); };
             button2.Click += delegate { RemoveMod(); };
 
-            button9.Hide();
-            button8.Hide();
+            button8.Click += delegate { launcher.OpenModpackEditor(); };
 
             textBox1.TextAlign = HorizontalAlignment.Center;
             textBox2.TextAlign = HorizontalAlignment.Center;

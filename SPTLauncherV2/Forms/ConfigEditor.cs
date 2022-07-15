@@ -134,8 +134,11 @@ namespace SPTLauncherV2 {
                         combobox.Items.Add(item);
                     }
                 }
-                combobox.SelectedIndex = 0;
-                panel1.Controls.Add(combobox);
+
+                if(combobox.Items.Count > 0) {
+                    combobox.SelectedIndex = 0;
+                    panel1.Controls.Add(combobox);
+                }
 
                 Button button2 = new();
                 button2.Text = "Remove Item";

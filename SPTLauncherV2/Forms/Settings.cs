@@ -23,9 +23,19 @@ namespace SPTLauncherV2 {
             button3.Click += delegate { OnChangeFileLocations(2); };
             button4.Click += delegate { OnChangeFileLocations(3); };
             button1.Click += delegate { launcher.UpdateProfile(launcher.CurrentProfile); };
+            button5.Click += delegate { OpenCustomJson(); };
             checkBox1.CheckedChanged += delegate { launcher.ToggleDev(checkBox1.Checked); };
 
             UpdateSettings();
+        }
+
+        private void OpenCustomJson() {
+            OpenFileDialog jsonLocation = new();
+            jsonLocation.Title = "Json File Location";
+            jsonLocation.Filter = "Json File|*.json";
+            if(jsonLocation.ShowDialog() == DialogResult.OK) {
+                launcher.OpenConfigEditorForm(jsonLocation.FileName);
+            }
         }
 
         private void UpdateSettings() {

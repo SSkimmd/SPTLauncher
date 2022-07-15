@@ -39,6 +39,20 @@ namespace SPTLauncherV2 {
         }
     }
 
+    public class Modpack {
+        public string Name;
+        public string TargetVersion;
+        public string Author;
+        public List<Mod> ModList;
+
+        public Modpack(string Name, string TargetVersion, string Author, List<Mod> ModList) {
+            this.Name = Name;
+            this.TargetVersion = TargetVersion;
+            this.Author = Author;
+            this.ModList = ModList;
+        }
+    }
+
     public class Mod {
         public string ModName;
         public string ModAuthor;

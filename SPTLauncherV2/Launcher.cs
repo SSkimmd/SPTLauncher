@@ -66,6 +66,11 @@ namespace SPTLauncherV2 {
             DependencyViewer.Show();
         }
 
+        public void OpenModpackEditor() {
+            Form ModpackEditor = new ModpackEditor(this);
+            ModpackEditor.Show();
+        }
+
         public void UpdateConfig(Config config) {
             CurrentConfig = config;
         }
