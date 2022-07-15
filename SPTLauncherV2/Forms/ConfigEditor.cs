@@ -16,12 +16,12 @@ namespace SPTLauncherV2 {
         public Launcher launcher;
         public string config;
         public JToken root;
-        bool dev;
+        bool IsDeveloper;
 
         public ConfigEditor(Launcher launcher, string config) {
             this.launcher = launcher;
             this.config = config;
-            dev = launcher.IsDeveloper;
+            this.IsDeveloper = launcher.IsDeveloper;
 
             InitializeComponent();
 
