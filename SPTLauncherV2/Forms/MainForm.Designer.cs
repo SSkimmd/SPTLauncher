@@ -53,6 +53,8 @@
             this.button7 = new System.Windows.Forms.Button();
             this.button8 = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
+            this.button9 = new System.Windows.Forms.Button();
+            this.label8 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // comboBox1
@@ -271,7 +273,7 @@
             // 
             this.button8.Location = new System.Drawing.Point(385, 245);
             this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(86, 29);
+            this.button8.Size = new System.Drawing.Size(94, 29);
             this.button8.TabIndex = 31;
             this.button8.Text = "Edit";
             this.button8.UseVisualStyleBackColor = true;
@@ -285,11 +287,31 @@
             this.label7.Text = "Modpack Settings";
             this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // button9
+            // 
+            this.button9.Location = new System.Drawing.Point(385, 327);
+            this.button9.Name = "button9";
+            this.button9.Size = new System.Drawing.Size(94, 29);
+            this.button9.TabIndex = 34;
+            this.button9.Text = "Edit";
+            this.button9.UseVisualStyleBackColor = true;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(385, 304);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(82, 20);
+            this.label8.TabIndex = 35;
+            this.label8.Text = "Edit Profile";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(818, 435);
+            this.Controls.Add(this.label8);
+            this.Controls.Add(this.button9);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.button8);
             this.Controls.Add(this.button7);
@@ -349,5 +371,7 @@
         private Button button7;
         private Button button8;
         private Label label7;
+        private Button button9;
+        private Label label8;
     }
 }

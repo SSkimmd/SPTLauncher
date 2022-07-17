@@ -54,6 +54,15 @@ namespace SPTLauncherV2 {
         public void OpenConfigEditorForm(string config) {
             Form ConfigEditor = new ConfigEditor(this, config);
             ConfigEditor.Show();
+            var form = Application.OpenForms.OfType<ConfigEditor>().Single();
+            form.OpenConfigFile(config);
+        }
+
+        public void OpenProfileEditorForm(string profile) {
+            Form ConfigEditor = new ConfigEditor(this, profile);
+            ConfigEditor.Show();
+            var form = Application.OpenForms.OfType<ConfigEditor>().Single();
+            form.OpenProfile(profile);
         }
 
         public void OpenSettingsForm() {

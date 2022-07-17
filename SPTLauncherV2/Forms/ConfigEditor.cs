@@ -18,15 +18,63 @@ namespace SPTLauncherV2 {
         public JToken root;
         bool IsDeveloper;
 
+        Label profileLabel;
+        ComboBox profileDropdown;
+
         public ConfigEditor(Launcher launcher, string config) {
             this.launcher = launcher;
             this.config = config;
             this.IsDeveloper = launcher.IsDeveloper;
+            this.DoubleBuffered = true;
 
             InitializeComponent();
 
             button1.Click += delegate { SaveConfigFile(); };
-            OpenConfigFile(config);
+        }
+
+        public void OpenProfile(string profile) {
+            if(File.Exists(profile)) {
+                using (var sreader = new StreamReader(profile))
+                using (var jreader = new JsonTextReader(sreader)) {
+                    try {
+                        root = JToken.Load(jreader);
+                    } catch(Exception e) {
+                        Debug.WriteLine(e.Message);
+                    }
+
+
+                    if(!root["characters"]["pmc"].HasValues) { MessageBox.Show("Profile is not valid"); Close(); return; }
+
+                    string profileName = root["characters"]["pmc"]["Info"]["Nickname"].ToString();
+                    profileLabel = new();
+                    profileLabel.Width = 400;
+                    profileLabel.Text = "select object to edit, profile name: " + profileName;
+
+
+                    profileDropdown = new();
+                    profileDropdown.Width = 300;
+                    profileDropdown.SelectedIndexChanged += delegate
+                    {
+                        ClearProfileEditor();
+                        DisplayJsonTree(root["characters"]["pmc"][profileDropdown.SelectedItem]);
+                    };
+
+                    var obj = (JObject)root["characters"]["pmc"];
+
+                    foreach(var property in obj.Properties()) {
+                        profileDropdown.Items.Add(property.Name);
+                    }
+
+                    panel1.Controls.Add(profileLabel);
+                    panel1.Controls.Add(profileDropdown);
+                }
+            }
+        }
+
+        private void ClearProfileEditor() {
+            panel1.Controls.Clear();
+            panel1.Controls.Add(profileLabel);
+            panel1.Controls.Add(profileDropdown);
         }
 
         public void OpenConfigFile(string config) {
@@ -40,8 +88,6 @@ namespace SPTLauncherV2 {
         }
 
         private void SaveConfigFile() {
-            Debug.WriteLine(root.ToString());
-
             using(var swriter = new StreamWriter(config)) 
             using(var jwriter = new JsonTextWriter(swriter)) {
                 jwriter.Formatting = Formatting.Indented;
@@ -91,7 +137,8 @@ namespace SPTLauncherV2 {
 
                 } else if(token.Type == JTokenType.Integer || token.Type == JTokenType.Float) {
                     NumericUpDown numselect = new();
-                    numselect.Maximum = int.MaxValue;
+                    numselect.Maximum = Int64.MaxValue;
+                    numselect.Minimum = Int64.MinValue;
                     numselect.Value = (decimal)token.ToObject<float>();
                     numselect.Width = 300;
                     numselect.Height = 20;

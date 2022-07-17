@@ -40,6 +40,7 @@ namespace SPTLauncherV2
             button2.Click += delegate { RemoveMod(); };
 
             button8.Click += delegate { launcher.OpenModpackEditor(); };
+            button9.Click += delegate { EditProfile(); };
 
             textBox1.TextAlign = HorizontalAlignment.Center;
             textBox2.TextAlign = HorizontalAlignment.Center;
@@ -144,6 +145,16 @@ namespace SPTLauncherV2
 
             IgnoreOnModChecked = false;
         }
+
+        private void EditProfile() {
+            OpenFileDialog fileLocation = new();
+            fileLocation.Title = "Select Profile";
+            fileLocation.Filter = "Json Files|*.json";
+            if(fileLocation.ShowDialog() == DialogResult.OK) {
+                launcher.OpenProfileEditorForm(fileLocation.FileName);
+            }
+        }
+
 
         private void AddMod() {
             OpenFileDialog fileLocation = new();
