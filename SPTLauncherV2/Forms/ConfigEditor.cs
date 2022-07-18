@@ -20,16 +20,37 @@ namespace SPTLauncherV2 {
 
         Label profileLabel;
         ComboBox profileDropdown;
+        ComboBox inventoryDropdown;
+
+        JToken itemListRoot;
 
         public ConfigEditor(Launcher launcher, string config) {
             this.launcher = launcher;
             this.config = config;
             this.IsDeveloper = launcher.IsDeveloper;
             this.DoubleBuffered = true;
+            string itemDatabasePath = Directory.GetCurrentDirectory() + "/itemsout.json";
+
+            if(File.Exists(itemDatabasePath)) {
+                using (var sreader = new StreamReader(itemDatabasePath))
+                using (var jreader = new JsonTextReader(sreader)) {
+                    itemListRoot = JToken.Load(jreader);
+                }
+            }
 
             InitializeComponent();
 
             button1.Click += delegate { SaveConfigFile(); };
+        }
+
+        private string GetItemNameFromID(string id) {
+            foreach(var obj in itemListRoot) {
+                if(obj["ID"].ToString() == id) {
+                    return obj["Name"].ToString();
+                }
+            }
+
+            return "Error";
         }
 
         public void OpenProfile(string profile) {
@@ -48,7 +69,7 @@ namespace SPTLauncherV2 {
                     string profileName = root["characters"]["pmc"]["Info"]["Nickname"].ToString();
                     profileLabel = new();
                     profileLabel.Width = 400;
-                    profileLabel.Text = "select object to edit, profile name: " + profileName;
+                    profileLabel.Text = "Select Object To Edit, Profile Name: " + profileName;
 
 
                     profileDropdown = new();
@@ -56,7 +77,12 @@ namespace SPTLauncherV2 {
                     profileDropdown.SelectedIndexChanged += delegate
                     {
                         ClearProfileEditor();
-                        DisplayJsonTree(root["characters"]["pmc"][profileDropdown.SelectedItem]);
+
+                        if(profileDropdown.SelectedItem.ToString() != "Inventory") {
+                            DisplayJsonTree(root["characters"]["pmc"][profileDropdown.SelectedItem]);
+                        } else {
+                            DisplayInventory();
+                        }
                     };
 
                     var obj = (JObject)root["characters"]["pmc"];
@@ -69,6 +95,34 @@ namespace SPTLauncherV2 {
                     panel1.Controls.Add(profileDropdown);
                 }
             }
+        }
+
+        private void DisplayInventory() {
+            inventoryDropdown = new();
+            inventoryDropdown.Width = 300;
+
+            JArray inventory = root["characters"]["pmc"]["Inventory"]["items"] as JArray;
+
+            foreach(var item in inventory) {
+                string name = GetItemNameFromID(item["_tpl"].ToString());
+                inventoryDropdown.Items.Add(name);
+            }
+
+            inventoryDropdown.SelectedIndexChanged += delegate {
+                ClearInventoryEditor();
+                int index = inventoryDropdown.SelectedIndex;
+                var item = root["characters"]["pmc"]["Inventory"]["items"][index];
+                DisplayJsonTree(item); 
+            };
+
+            panel1.Controls.Add(inventoryDropdown);
+        }
+
+        private void ClearInventoryEditor() {
+            panel1.Controls.Clear();
+            panel1.Controls.Add(profileLabel);
+            panel1.Controls.Add(profileDropdown);
+            panel1.Controls.Add(inventoryDropdown);
         }
 
         private void ClearProfileEditor() {

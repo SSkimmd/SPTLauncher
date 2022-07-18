@@ -271,7 +271,7 @@
             // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(385, 245);
+            this.button8.Location = new System.Drawing.Point(485, 327);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(94, 29);
             this.button8.TabIndex = 31;
@@ -280,12 +280,12 @@
             // 
             // label7
             // 
-            this.label7.Location = new System.Drawing.Point(385, 215);
+            this.label7.Location = new System.Drawing.Point(485, 304);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(132, 27);
+            this.label7.Size = new System.Drawing.Size(94, 20);
             this.label7.TabIndex = 33;
-            this.label7.Text = "Modpack Settings";
-            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.label7.Text = "Modpack";
+            this.label7.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // button9
             // 
@@ -298,12 +298,12 @@
             // 
             // label8
             // 
-            this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(385, 304);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(82, 20);
+            this.label8.Size = new System.Drawing.Size(94, 20);
             this.label8.TabIndex = 35;
-            this.label8.Text = "Edit Profile";
+            this.label8.Text = "Profile";
+            this.label8.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // MainForm
             // 
